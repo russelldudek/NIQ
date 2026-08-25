@@ -27,6 +27,7 @@ This audit covers the candidate vision site only. The broader application campai
 ## Experience and interaction
 
 - Role-derived 3D depth narrative: passed
+- Distance-driven depth of field: passed; the active focal plane remains sharp while departing and approaching scenes progressively blur up to 8 px using a nonlinear distance curve
 - Desktop scroll moves through depth rather than vertically translating page sections: passed
 - Idle scene settling: passed; 180 ms idle detection resolves to the nearest scene over 820 ms, with a 1050 ms final-scene arrival
 - User interruption: passed; wheel, touch, pointer, and navigation-key intent cancels an in-flight settle immediately
@@ -38,7 +39,7 @@ This audit covers the candidate vision site only. The broader application campai
 - Value before ask: passed
 - Cost-of-inaction framing: passed without coercive language
 - Keyboard-operable controls: passed
-- Reduced-motion semantic equivalent: passed
+- Reduced-motion semantic equivalent: passed; depth blur and automatic settling are disabled
 
 ## Responsive QA
 
@@ -53,7 +54,7 @@ Rendered with Chromium:
 - Reduced-motion layout: passed
 - Scenario final-state synchronization: passed
 - Closing-scene navigation and exact final settlement: passed
-- `qa/scene_regression.py`: passed (closing scene, idle snap, user cancellation, reduced-motion behavior)
+- `qa/scene_regression.py`: passed (closing scene, idle snap, user cancellation, nonlinear depth blur, mobile blur suppression, reduced-motion behavior)
 
 ## Evidence integrity
 
@@ -83,3 +84,17 @@ Approved correction: preserve free depth scrolling while the user is moving, the
 Regression assertion added: `qa/scene_regression.py` verifies eight scenes and navigation states, exact idle settlement, immediate cancellation of in-flight snapping, and no auto-snap under reduced motion.
 
 Prior visual and motion proof: invalidated by this material correction and re-run across 1440 × 900, 1280 × 800, 768 × 1024, 390 × 844, 320 × 800, and reduced-motion states.
+
+## Depth-of-field correction record
+
+Observed defect: the Z-depth transition communicated distance through transform and opacity, but departing scenes remained optically sharp. Russell requested a photographic depth-of-field cue so spatial movement would read as focus as well as scale and position.
+
+Why prior QA missed it: the previous correction treated exact scene settlement as the focal-state requirement but did not assert optical focus during the transition itself.
+
+Approved correction: map each scene's absolute Z-distance to a nonlinear blur curve. The first 80 px around the focal plane remain sharp; blur then increases with a 1.65 exponent and caps at 8 px as a scene moves toward disappearance. The scene that settles on the focal plane returns to `blur(0px)`. Mobile and `prefers-reduced-motion` keep `filter: none`.
+
+Regression assertion added: `qa/scene_regression.py` now verifies exact focal sharpness, positive bounded blur between scenes, and no depth blur on mobile or reduced-motion surfaces.
+
+Rendered verification: 1440 × 900, 1280 × 800, 768 × 1024, 390 × 844, 320 × 800, and reduced-motion checks passed with zero horizontal overflow and zero browser console warnings/errors. Desktop transition measured 3.73 px blur on the departing scene and 6.96 px on the approaching scene at the sampled intermediate camera position; magnetic settlement returned the active scene to 0 px.
+
+Prior motion proof: invalidated by this correction and re-run before publication.
