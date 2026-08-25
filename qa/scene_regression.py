@@ -100,16 +100,32 @@ class SceneRegression(unittest.TestCase):
             scene_index = 2
             exact = scene_index / (metrics["count"] - 1) * metrics["max"]
             page.evaluate("y => scrollTo(0, y)", exact)
-            page.wait_for_timeout(80)
+            page.wait_for_function("y => Math.abs(scrollY - y) < 2", arg=exact)
+            page.wait_for_timeout(20)
+            page.evaluate("""() => {
+                dispatchEvent(new WheelEvent('wheel', {deltaY: 0, bubbles: true}));
+                dispatchEvent(new Event('resize'));
+            }""")
+            page.wait_for_function("""() => {
+                const value = document.querySelector('#scene-2').style.filter;
+                const amount = Number(value.slice(5, -3));
+                return Number.isFinite(amount) && amount < 0.05;
+            }""", timeout=500)
             sharp_filter = page.locator(f"#scene-{scene_index}").evaluate("el => el.style.filter")
             self.assertIn("blur(0", sharp_filter, f"active focal plane should be sharp, got {sharp_filter!r}")
 
             midpoint = (scene_index + 0.42) / (metrics["count"] - 1) * metrics["max"]
-            page.evaluate("""y => {
-                dispatchEvent(new WheelEvent('wheel', {deltaY: 120, bubbles: true}));
-                scrollTo(0, y);
-            }""", midpoint)
-            page.wait_for_timeout(40)
+            page.evaluate("y => scrollTo(0, y)", midpoint)
+            page.wait_for_function("y => Math.abs(scrollY - y) < 2", arg=midpoint)
+            page.wait_for_timeout(20)
+            page.evaluate("""() => {
+                dispatchEvent(new WheelEvent('wheel', {deltaY: 0, bubbles: true}));
+                dispatchEvent(new Event('resize'));
+            }""")
+            page.wait_for_function("""() => {
+                const parse = id => Number(document.querySelector(id).style.filter.slice(5, -3));
+                return parse('#scene-2') > 0.5 && parse('#scene-3') > 0.5;
+            }""", timeout=500)
             departing_filter = page.locator(f"#scene-{scene_index}").evaluate("el => el.style.filter")
             arriving_filter = page.locator(f"#scene-{scene_index + 1}").evaluate("el => el.style.filter")
 
