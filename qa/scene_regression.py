@@ -105,8 +105,11 @@ class SceneRegression(unittest.TestCase):
             self.assertIn("blur(0", sharp_filter, f"active focal plane should be sharp, got {sharp_filter!r}")
 
             midpoint = (scene_index + 0.42) / (metrics["count"] - 1) * metrics["max"]
-            page.evaluate("y => scrollTo(0, y)", midpoint)
-            page.wait_for_timeout(80)
+            page.evaluate("""y => {
+                dispatchEvent(new WheelEvent('wheel', {deltaY: 120, bubbles: true}));
+                scrollTo(0, y);
+            }""", midpoint)
+            page.wait_for_timeout(40)
             departing_filter = page.locator(f"#scene-{scene_index}").evaluate("el => el.style.filter")
             arriving_filter = page.locator(f"#scene-{scene_index + 1}").evaluate("el => el.style.filter")
 
