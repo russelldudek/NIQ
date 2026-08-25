@@ -182,10 +182,13 @@
       const distance = Math.abs(z);
       if (distance < nearestDistance) { nearestDistance = distance; nearest = index; }
       const opacity = Math.max(0, 1 - distance / 700);
+      const focusDistance = Math.max(0, Math.min(1, (distance - 80) / 620));
+      const blur = 8 * Math.pow(focusDistance, 1.65);
       const y = Math.max(-80, Math.min(80, z * .035));
       const rotate = Math.max(-3.5, Math.min(3.5, z / 320));
       scene.style.transform = `translate3d(0, ${y}px, ${z}px) rotateX(${rotate}deg)`;
       scene.style.opacity = String(opacity);
+      scene.style.filter = `blur(${blur.toFixed(2)}px)`;
       scene.classList.toggle('is-active', distance < 420);
       scene.setAttribute('aria-hidden', distance < 520 ? 'false' : 'true');
     });
