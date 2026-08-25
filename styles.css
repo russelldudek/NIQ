@@ -67,7 +67,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--niq-light-blue)
   margin: 0 auto;
   padding: clamp(26px, 4vw, 70px) clamp(70px, 7vw, 96px);
   transform-style: preserve-3d;
-  will-change: transform, opacity;
+  will-change: transform, opacity, filter;
   opacity: 0;
   pointer-events: none;
 }
@@ -218,7 +218,7 @@ dd { margin: 5px 0 0; font-size: .92rem; line-height: 1.35; }
   .scroll-track { display: none; }
   .viewport { position: static; inset: auto; perspective: none; overflow: visible; }
   .depth-world { position: static; }
-  .scene { position: relative; inset: auto; display: block; min-height: 100svh; width: 100%; padding: 112px 22px 70px; opacity: 1 !important; transform: none !important; pointer-events: auto !important; border-bottom: 1px solid var(--line); }
+  .scene { position: relative; inset: auto; display: block; min-height: 100svh; width: 100%; padding: 112px 22px 70px; opacity: 1 !important; transform: none !important; filter: none !important; pointer-events: auto !important; border-bottom: 1px solid var(--line); }
   h1 { font-size: clamp(3rem, 15vw, 5.3rem); }
   h2 { font-size: clamp(2.3rem, 11vw, 3.8rem); }
   .scene-hero { padding-top: 125px; }
@@ -252,7 +252,7 @@ dd { margin: 5px 0 0; font-size: .92rem; line-height: 1.35; }
   .scroll-track { display: none; }
   .viewport { position: static; inset: auto; perspective: none; overflow: visible; }
   .depth-world { position: static; }
-  .scene { position: relative; inset: auto; min-height: 100vh; opacity: 1 !important; transform: none !important; pointer-events: auto !important; border-bottom: 1px solid var(--line); }
+  .scene { position: relative; inset: auto; min-height: 100vh; opacity: 1 !important; transform: none !important; filter: none !important; pointer-events: auto !important; border-bottom: 1px solid var(--line); }
   .scene-nav { display: none; }
   .site-footer { position: static; }
 }
