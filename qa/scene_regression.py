@@ -90,6 +90,60 @@ class SceneRegression(unittest.TestCase):
         finally:
             page.close()
 
+    def test_desktop_depth_of_field_tracks_scene_distance(self):
+        page = self.desktop_page()
+        try:
+            metrics = page.evaluate("""() => ({
+                max: document.documentElement.scrollHeight - innerHeight,
+                count: document.querySelectorAll('.scene').length
+            })""")
+            scene_index = 2
+            exact = scene_index / (metrics["count"] - 1) * metrics["max"]
+            page.evaluate("y => scrollTo(0, y)", exact)
+            page.wait_for_timeout(80)
+            sharp_filter = page.locator(f"#scene-{scene_index}").evaluate("el => el.style.filter")
+            self.assertIn("blur(0", sharp_filter, f"active focal plane should be sharp, got {sharp_filter!r}")
+
+            midpoint = (scene_index + 0.42) / (metrics["count"] - 1) * metrics["max"]
+            page.evaluate("y => scrollTo(0, y)", midpoint)
+            page.wait_for_timeout(80)
+            departing_filter = page.locator(f"#scene-{scene_index}").evaluate("el => el.style.filter")
+            arriving_filter = page.locator(f"#scene-{scene_index + 1}").evaluate("el => el.style.filter")
+
+            import re
+            def blur_px(value):
+                match = re.search(r"blur\(([-0-9.]+)px\)", value or "")
+                self.assertIsNotNone(match, f"expected blur() filter, got {value!r}")
+                return float(match.group(1))
+
+            self.assertGreater(blur_px(departing_filter), 0.5)
+            self.assertGreater(blur_px(arriving_filter), 0.5)
+            self.assertLessEqual(blur_px(departing_filter), 8.01)
+            self.assertLessEqual(blur_px(arriving_filter), 8.01)
+        finally:
+            page.close()
+
+    def test_mobile_and_reduced_motion_disable_depth_blur(self):
+        mobile_page = self.browser.new_page(viewport={"width": 390, "height": 844})
+        try:
+            mobile_page.set_content(self.html, wait_until="load")
+            mobile_page.evaluate("scrollTo(0, 900)")
+            mobile_page.wait_for_timeout(60)
+            values = mobile_page.locator('.scene').evaluate_all("els => els.map(el => getComputedStyle(el).filter)")
+            self.assertTrue(all(value == 'none' for value in values), values)
+        finally:
+            mobile_page.close()
+
+        reduced_page = self.browser.new_page(viewport={"width": 1440, "height": 900}, reduced_motion="reduce")
+        try:
+            reduced_page.set_content(self.html, wait_until="load")
+            reduced_page.evaluate("scrollTo(0, 900)")
+            reduced_page.wait_for_timeout(60)
+            values = reduced_page.locator('.scene').evaluate_all("els => els.map(el => getComputedStyle(el).filter)")
+            self.assertTrue(all(value == 'none' for value in values), values)
+        finally:
+            reduced_page.close()
+
     def test_reduced_motion_does_not_auto_snap(self):
         page = self.browser.new_page(viewport={"width": 1440, "height": 900}, reduced_motion="reduce")
         try:
