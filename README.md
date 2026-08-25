@@ -2,7 +2,7 @@
 
 Independent candidate vision by Russell Dudek for global data acquisition leadership at NIQ.
 
-The experience is intentionally built as a depth-based narrative: on desktop, scrolling moves the viewer forward through a series of role-specific planes instead of simply moving content vertically. Tablet and mobile layouts preserve the full narrative with simpler composition, and reduced-motion users receive a static complete version.
+The experience is intentionally built as a depth-based narrative: on desktop, scrolling moves the viewer forward through a series of role-specific planes instead of simply moving content vertically. When scrolling pauses, the camera eases into the nearest scene rather than leaving the page half-focused; user input cancels that settling immediately. The final scene resolves into a dedicated closing hero. Tablet and mobile layouts preserve the full narrative with simpler composition, and reduced-motion users receive a static complete version.
 
 ## Core thesis
 

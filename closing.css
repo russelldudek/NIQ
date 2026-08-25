@@ -1,0 +1,101 @@
+.scroll-track { height: 800vh; }
+
+.scene-final {
+  place-items: center;
+  text-align: center;
+  isolation: isolate;
+  overflow: hidden;
+}
+.final-hero {
+  position: relative;
+  z-index: 3;
+  width: min(100%, 1040px);
+  display: grid;
+  justify-items: center;
+}
+.final-hero h2 {
+  max-width: 980px;
+  margin-bottom: 26px;
+  font-size: clamp(3.5rem, 7.4vw, 7.8rem);
+  line-height: .88;
+}
+.final-deck {
+  max-width: 720px;
+  margin-bottom: 34px;
+  color: var(--muted);
+  font-size: clamp(1.15rem, 1.7vw, 1.45rem);
+  line-height: 1.5;
+}
+.final-signoff {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+  font-size: .86rem;
+}
+.final-name {
+  color: var(--text);
+  font-weight: 650;
+  letter-spacing: .03em;
+}
+.final-signoff a {
+  color: var(--muted);
+  text-decoration: none;
+}
+.final-signoff a:hover { color: var(--text); }
+.final-signoff .final-cta {
+  padding: 12px 16px;
+  border: 1px solid var(--line-strong);
+  color: var(--niq-white);
+  background: rgba(45, 109, 246, .12);
+  text-transform: uppercase;
+  letter-spacing: .09em;
+}
+.final-cta span { display: inline-block; margin-left: 8px; transition: transform .22s ease; }
+.final-cta:hover span { transform: translateX(4px); }
+.closing-horizon {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  transform-style: preserve-3d;
+}
+.horizon-line {
+  position: absolute;
+  left: 9%;
+  right: 9%;
+  top: 66%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(49,209,255,.7), transparent);
+  box-shadow: 0 0 34px rgba(49,209,255,.22);
+}
+.horizon-plane {
+  position: absolute;
+  top: 66%;
+  width: 55%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(163,169,245,.46));
+  transform-origin: 100% 50%;
+}
+.plane-left { left: -5%; transform: rotate(10deg); }
+.plane-right { right: -5%; transform: scaleX(-1) rotate(10deg); }
+.horizon-light {
+  position: absolute;
+  left: 50%;
+  top: 66%;
+  width: min(58vw, 760px);
+  height: min(34vw, 360px);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, rgba(45,109,246,.23) 0%, rgba(49,209,255,.08) 34%, transparent 72%);
+  filter: blur(2px);
+}
+
+@media (max-width: 760px) {
+  .scene-final { min-height: 100svh; display: grid; padding-top: 118px; }
+  .final-hero h2 { font-size: clamp(3.2rem, 15vw, 5rem); }
+  .final-signoff { display: grid; justify-items: center; }
+  .horizon-line, .horizon-plane { top: 72%; }
+  .horizon-light { top: 72%; width: 110vw; height: 65vw; }
+}

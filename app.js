@@ -4,8 +4,15 @@
   const root = document.documentElement;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const mobile = window.matchMedia('(max-width: 760px)');
+  const SNAP_IDLE_MS = 180;
+  const SNAP_DURATION_MS = 820;
+  const FINAL_SNAP_DURATION_MS = 1050;
   let currentScene = 0;
   let raf = 0;
+  let snapTimer = 0;
+  let snapRaf = 0;
+  let snapToken = 0;
+  let isSnapping = false;
 
   const scenarioData = {
     balanced: {
@@ -66,14 +73,89 @@
   });
   setScenario('balanced');
 
+  function maxScroll() {
+    return Math.max(1, document.documentElement.scrollHeight - innerHeight);
+  }
+
+  function sceneTarget(index) {
+    return (index / (scenes.length - 1)) * maxScroll();
+  }
+
+  function easeInOutCubic(t) {
+    return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  function cancelSnapAnimation() {
+    if (snapTimer) clearTimeout(snapTimer);
+    snapTimer = 0;
+    if (snapRaf) cancelAnimationFrame(snapRaf);
+    snapRaf = 0;
+    snapToken += 1;
+    isSnapping = false;
+  }
+
+  function animateScrollTo(target, duration = SNAP_DURATION_MS) {
+    const start = scrollY;
+    const delta = target - start;
+    if (Math.abs(delta) < 2) return;
+
+    if (snapRaf) cancelAnimationFrame(snapRaf);
+    const token = ++snapToken;
+    isSnapping = true;
+    let startedAt = 0;
+
+    function step(timestamp) {
+      if (token !== snapToken) return;
+      if (!startedAt) startedAt = timestamp;
+      const progress = Math.min(1, (timestamp - startedAt) / duration);
+      const eased = easeInOutCubic(progress);
+      window.scrollTo(0, start + delta * eased);
+      requestRender();
+
+      if (progress < 1) {
+        snapRaf = requestAnimationFrame(step);
+      } else {
+        snapRaf = 0;
+        isSnapping = false;
+        requestRender();
+      }
+    }
+
+    snapRaf = requestAnimationFrame(step);
+  }
+
+  function nearestSceneIndex() {
+    const normalized = Math.min(1, Math.max(0, scrollY / maxScroll()));
+    return Math.round(normalized * (scenes.length - 1));
+  }
+
+  function snapToNearestScene() {
+    snapTimer = 0;
+    if (mobile.matches || reduceMotion.matches || isSnapping) return;
+    const index = nearestSceneIndex();
+    const duration = index === scenes.length - 1 ? FINAL_SNAP_DURATION_MS : SNAP_DURATION_MS;
+    animateScrollTo(sceneTarget(index), duration);
+  }
+
+  function scheduleSnap() {
+    if (mobile.matches || reduceMotion.matches || isSnapping) return;
+    if (snapTimer) clearTimeout(snapTimer);
+    snapTimer = window.setTimeout(snapToNearestScene, SNAP_IDLE_MS);
+  }
+
+  function cancelForUserIntent() {
+    if (mobile.matches || reduceMotion.matches) return;
+    if (snapTimer || isSnapping || snapRaf) cancelSnapAnimation();
+  }
+
   function scrollToScene(index) {
     if (mobile.matches || reduceMotion.matches) {
       scenes[index]?.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'start' });
       return;
     }
-    const max = document.documentElement.scrollHeight - innerHeight;
-    const target = (index / (scenes.length - 1)) * max;
-    window.scrollTo({ top: target, behavior: 'smooth' });
+    cancelSnapAnimation();
+    const duration = index === scenes.length - 1 ? FINAL_SNAP_DURATION_MS : SNAP_DURATION_MS;
+    animateScrollTo(sceneTarget(index), duration);
   }
 
   navButtons.forEach(btn => btn.addEventListener('click', () => scrollToScene(Number(btn.dataset.jump))));
@@ -89,7 +171,7 @@
   function renderDepth() {
     raf = 0;
     if (mobile.matches || reduceMotion.matches) return;
-    const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    const max = maxScroll();
     const normalized = Math.min(1, Math.max(0, scrollY / max));
     const camera = normalized * (scenes.length - 1) * 1120;
     let nearest = 0;
@@ -116,8 +198,19 @@
     if (!raf) raf = requestAnimationFrame(renderDepth);
   }
 
-  window.addEventListener('scroll', requestRender, { passive: true });
+  window.addEventListener('scroll', () => {
+    requestRender();
+    scheduleSnap();
+  }, { passive: true });
   window.addEventListener('resize', requestRender);
+  window.addEventListener('wheel', cancelForUserIntent, { passive: true });
+  window.addEventListener('touchstart', cancelForUserIntent, { passive: true });
+  window.addEventListener('pointerdown', cancelForUserIntent, { passive: true });
+  window.addEventListener('keydown', event => {
+    if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ', 'Spacebar'].includes(event.key)) {
+      cancelForUserIntent();
+    }
+  });
   reduceMotion.addEventListener?.('change', () => location.reload());
   mobile.addEventListener?.('change', () => location.reload());
 
