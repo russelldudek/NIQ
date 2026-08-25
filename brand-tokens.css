@@ -1,0 +1,24 @@
+:root {
+  /* NIQ official values from NIQ Brand Guidelines V2 (2023). */
+  --niq-blue: #2D6DF6;
+  --niq-deep-blue: #060A45;
+  --niq-light-blue: #31D1FF;
+  --niq-orange: #EF5F17;
+  --niq-violet: #A3A9F5;
+  --niq-deep-violet: #787CA9;
+  --niq-green: #59AD00;
+  --niq-magenta: #EF5890;
+  --niq-yellow: #FFB500;
+  --niq-white: #FFFFFF;
+
+  /* Candidate-original neutrals supporting the role-derived 3D depth system. */
+  --ink: #020514;
+  --ink-2: #0B1028;
+  --surface: #0F1735;
+  --surface-2: #141E42;
+  --text: #F8FAFF;
+  --muted: #AAB5D6;
+  --line: rgba(255, 255, 255, 0.14);
+  --line-strong: rgba(49, 209, 255, 0.38);
+  --max: 1240px;
+}
