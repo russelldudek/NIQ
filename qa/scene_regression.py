@@ -103,18 +103,17 @@ class SceneRegression(unittest.TestCase):
                 count: document.querySelectorAll('.scene').length
             })""")
             scene_index = 2
-            midpoint = (scene_index + 0.42) / (metrics["count"] - 1) * metrics["max"]
+            fraction = 0.42
+            midpoint = (scene_index + fraction) / (metrics["count"] - 1) * metrics["max"]
             page.evaluate("y => scrollTo(0, y)", midpoint)
             page.wait_for_function("y => Math.abs(scrollY - y) < 2", arg=midpoint)
-            page.wait_for_timeout(20)
+            page.wait_for_timeout(25)
             page.evaluate("""() => {
                 dispatchEvent(new WheelEvent('wheel', {deltaY: 0, bubbles: true}));
                 dispatchEvent(new Event('resize'));
             }""")
-            page.wait_for_function("""() => {
-                const parse = id => Number(document.querySelector(id).style.filter.slice(5, -3));
-                return parse('#scene-2') > 0.5 && parse('#scene-3') > 0.5;
-            }""", timeout=500)
+            page.wait_for_timeout(600)
+
             departing_filter = page.locator(f"#scene-{scene_index}").evaluate("el => el.style.filter")
             arriving_filter = page.locator(f"#scene-{scene_index + 1}").evaluate("el => el.style.filter")
 
@@ -124,8 +123,14 @@ class SceneRegression(unittest.TestCase):
                 self.assertIsNotNone(match, f"expected blur() filter, got {value!r}")
                 return float(match.group(1))
 
-            self.assertGreater(blur_px(departing_filter), 0.5)
-            self.assertGreater(blur_px(arriving_filter), 0.5)
+            def expected_blur(distance):
+                focus_distance = max(0, min(1, (distance - 80) / 620))
+                return 8 * (focus_distance ** 1.65)
+
+            departing_expected = expected_blur(fraction * 1120)
+            arriving_expected = expected_blur((1 - fraction) * 1120)
+            self.assertAlmostEqual(blur_px(departing_filter), departing_expected, delta=0.06)
+            self.assertAlmostEqual(blur_px(arriving_filter), arriving_expected, delta=0.06)
             self.assertLessEqual(blur_px(departing_filter), 8.01)
             self.assertLessEqual(blur_px(arriving_filter), 8.01)
         finally:
