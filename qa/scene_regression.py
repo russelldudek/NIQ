@@ -98,6 +98,13 @@ class SceneRegression(unittest.TestCase):
             initial_filter = page.locator("#scene-0").evaluate("el => el.style.filter")
             self.assertIn("blur(0", initial_filter, f"opening focal plane should be sharp, got {initial_filter!r}")
 
+            # Isolate optical focus from the separately tested idle-snap behavior.
+            page.evaluate("""() => {
+                const nativeSetTimeout = window.setTimeout.bind(window);
+                window.setTimeout = (fn, delay, ...args) =>
+                    delay === 180 ? 0 : nativeSetTimeout(fn, delay, ...args);
+            }""")
+
             metrics = page.evaluate("""() => ({
                 max: document.documentElement.scrollHeight - innerHeight,
                 count: document.querySelectorAll('.scene').length
@@ -107,12 +114,8 @@ class SceneRegression(unittest.TestCase):
             midpoint = (scene_index + fraction) / (metrics["count"] - 1) * metrics["max"]
             page.evaluate("y => scrollTo(0, y)", midpoint)
             page.wait_for_function("y => Math.abs(scrollY - y) < 2", arg=midpoint)
-            page.wait_for_timeout(25)
-            page.evaluate("""() => {
-                dispatchEvent(new WheelEvent('wheel', {deltaY: 0, bubbles: true}));
-                dispatchEvent(new Event('resize'));
-            }""")
-            page.wait_for_timeout(600)
+            page.evaluate("dispatchEvent(new Event('resize'))")
+            page.wait_for_timeout(650)
 
             departing_filter = page.locator(f"#scene-{scene_index}").evaluate("el => el.style.filter")
             arriving_filter = page.locator(f"#scene-{scene_index + 1}").evaluate("el => el.style.filter")
