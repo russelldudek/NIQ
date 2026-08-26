@@ -7,7 +7,7 @@ class TestSignalCorridor(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.pw=sync_playwright().start()
-        cls.browser=cls.pw.chromium.launch(headless=True, executable_path='/usr/bin/chromium')
+        cls.browser=cls.pw.chromium.launch(headless=True, executable_path='/usr/bin/chromium', args=['--no-sandbox'])
 
     @classmethod
     def tearDownClass(cls):
@@ -18,7 +18,7 @@ class TestSignalCorridor(unittest.TestCase):
         p=self.browser.new_page(viewport={'width':w,'height':h}, reduced_motion=reduced or 'no-preference')
         html=(ROOT/'index.html').read_text()
         p.set_content(html, wait_until='load')
-        p.wait_for_timeout(80)
+        p.wait_for_timeout(100)
         return p
 
     def test_scene_count_copy_and_no_fake_percentages(self):
@@ -39,7 +39,7 @@ class TestSignalCorridor(unittest.TestCase):
             p.evaluate('y=>scrollTo(0,y)', 3/(m['count']-1)*m['max'])
             p.wait_for_timeout(120)
             p.locator('[data-scenario="digital"]').click()
-            p.wait_for_timeout(600)
+            p.wait_for_timeout(100)
             self.assertEqual(p.locator('[data-scenario="digital"]').get_attribute('aria-pressed'),'true')
             self.assertEqual(p.locator('.source-role[data-key="retailer"] b').inner_text(),'PRIMARY')
             self.assertEqual(p.locator('.source-role[data-key="field"] b').inner_text(),'EXCEPTION')
@@ -69,7 +69,7 @@ class TestSignalCorridor(unittest.TestCase):
         finally:
             p.close()
 
-    def test_signal_canvas_and_mobile_static_semantics(self):
+    def test_signal_canvas_and_static_semantics(self):
         p=self.page()
         try:
             self.assertTrue(p.locator('#signalField').is_visible())
@@ -77,7 +77,7 @@ class TestSignalCorridor(unittest.TestCase):
         finally:
             p.close()
 
-        p=self.page(390,844)
+        p=self.page(768,1024)
         try:
             vals=p.locator('.scene').evaluate_all("els=>els.map(el=>getComputedStyle(el).filter)")
             self.assertTrue(all(v=='none' for v in vals),vals)
@@ -89,6 +89,40 @@ class TestSignalCorridor(unittest.TestCase):
         try:
             vals=p.locator('.scene').evaluate_all("els=>els.map(el=>getComputedStyle(el).filter)")
             self.assertTrue(all(v=='none' for v in vals),vals)
+            self.assertEqual(p.locator('.scene-nav').evaluate('el=>getComputedStyle(el).display'),'none')
+        finally:
+            p.close()
+
+    def test_visual_scale_alignment_and_narrow_phone(self):
+        p=self.page()
+        try:
+            hero=p.locator('#heroTitle')
+            self.assertEqual(hero.locator('.hero-line').count(),3)
+            metrics=hero.evaluate("el=>({font:parseFloat(getComputedStyle(el).fontSize),h:el.getBoundingClientRect().height})")
+            self.assertLessEqual(metrics['font'],70)
+            self.assertLessEqual(metrics['h'],200)
+            copy=p.locator('.hero-copy').bounding_box()
+            stack=p.locator('.source-stack').bounding_box()
+            self.assertLess(copy['x']+copy['width'], stack['x']+8)
+
+            proof=p.locator('.evidence-axis article').evaluate_all("els=>els.map(e=>e.getBoundingClientRect()).map(r=>({x:r.x,y:r.y,w:r.width,h:r.height}))")
+            self.assertEqual(len(proof),4)
+            self.assertLess(max(r['y'] for r in proof)-min(r['y'] for r in proof),2)
+            self.assertLess(max(r['w'] for r in proof)-min(r['w'] for r in proof),2)
+
+            phases=p.locator('.milestones article').evaluate_all("els=>els.map(e=>e.getBoundingClientRect()).map(r=>({x:r.x,y:r.y,w:r.width,h:r.height}))")
+            self.assertEqual(len(phases),3)
+            self.assertLess(max(r['y'] for r in phases)-min(r['y'] for r in phases),2)
+        finally:
+            p.close()
+
+        p=self.page(320,800)
+        try:
+            overflow=p.evaluate('document.documentElement.scrollWidth-document.documentElement.clientWidth')
+            self.assertEqual(overflow,0)
+            hero=p.locator('#heroTitle').evaluate("el=>({h:el.getBoundingClientRect().height,font:parseFloat(getComputedStyle(el).fontSize)})")
+            self.assertLessEqual(hero['h'],130)
+            self.assertLessEqual(hero['font'],44)
         finally:
             p.close()
 
