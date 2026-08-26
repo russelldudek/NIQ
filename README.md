@@ -2,27 +2,31 @@
 
 Independent candidate vision by Russell Dudek for global data acquisition leadership at NIQ.
 
-The experience is intentionally built as a depth-based narrative: on desktop, scrolling moves the viewer forward through a series of role-specific planes instead of simply moving content vertically. As scenes move away from the focal plane they progressively defocus, then the nearest scene sharpens as scrolling pauses and the camera eases into exact alignment; new user input cancels that settling immediately. The final scene resolves into a dedicated closing hero. Tablet and mobile layouts preserve the full narrative with simpler composition, and reduced-motion users receive a static complete version.
-
-## Core thesis
+## Core argument
 
 **The Full View starts at the source.**
 
-The operating model treats data acquisition as a portfolio of collection methods that can be retained, augmented, automated, partnered, acquired or retired according to quality, economics, coverage, risk and local-intelligence requirements.
+The site argues that global data acquisition should be managed as a portfolio of collection methods rather than as a field program: protect the knowledge and trust embedded in the current model while changing the mechanisms that create unnecessary cost, latency, inconsistency, and scaling friction.
 
-## Current state
+## Experience
 
-This is the candidate-vision site development build. It is intentionally not yet access-controlled. A protected release should use real server- or edge-layer authentication rather than a client-side JavaScript password screen.
+Desktop uses a depth-based Signal Corridor rather than ordinary vertical section scrolling. Scenes move through Z-space, progressively defocus as they leave the focal plane, and settle magnetically to a sharp scene after scrolling pauses. A sparse signal field sits behind the narrative; tiny points twinkle at rest and respond subtly to scroll velocity without becoming a space-themed visual. Mobile uses a semantic vertical composition, and reduced-motion mode removes depth motion, blur, auto-snap, and twinkling.
 
-## Public information sources
+The primary interactive artifact is a qualitative Source Portfolio model. Four illustrative market scenarios rebalance Field, Retailer, eCommerce, Partner, Consumer, and AI-native collection methods into operating roles such as Primary, Supporting, and Exception. No percentage source mix is implied.
 
-- https://nielseniq.com/global/en/
-- https://nielseniq.com/global/en/about-us/niq-media-center/
-- https://investors.nielseniq.com/
-- https://investors.nielseniq.com/news/news-details/2026/NIQ-Announces-Strong-Second-Quarter-2026-Results/default.aspx
-- https://nielseniq.com/global/en/news-center/2026/niq-deployco-consumer-intelligence-enterprise-workflows/
+## Current company context used
 
-## Candidate authorship
+- NIQ / The OpenAI Deployment Company collaboration announced 25 August 2026
+- NIQ AI-ready data foundation: 160 petabytes, approximately 260 million product items, 10.5 billion product attributes
+- NIQ Q2 2026: Connect data engine at approximately 4.3 trillion records added per week
+
+Primary public sources are linked directly inside the company-moment scene.
+
+## Development state
+
+This is a development build and is intentionally not yet access-controlled. A protected external release should use server- or edge-layer authentication rather than a client-side password overlay.
+
+The official NIQ logo/wordmark still needs to replace the temporary typeset NIQ identifier before protected external release. No official mark is recreated or traced in code.
 
 Russell Dudek · Pittsburgh, Pennsylvania
 russelldudek@gmail.com · 412.287.8640 · https://www.linkedin.com/in/russelldudek

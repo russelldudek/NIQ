@@ -1,23 +1,34 @@
 # Source Notes
 
-## Company moment
+This candidate vision separates public NIQ facts, candidate-created operating models, and verified candidate evidence.
 
-Public NIQ sources used in the candidate vision:
+## Public NIQ sources
 
-- NIQ Q2 2026 results reported 8.0% year-over-year revenue growth, 21.9% adjusted EBITDA growth, 270 basis points of adjusted EBITDA margin expansion, and Connect data engine growth at approximately 4.3 trillion records per week.
-- NIQ announced on August 25, 2026 a collaboration with The OpenAI Deployment Company to extend NIQ intelligence into enterprise AI workflows.
-- NIQ's corporate homepage positions the future of consumer intelligence as automated, accelerated and built on accurate, robust data.
+### 25 August 2026 — NIQ and The OpenAI Deployment Company
+Source: NIQ News Center
+https://nielseniq.com/global/en/news-center/2026/niq-deployco-consumer-intelligence-enterprise-workflows/
 
-These are public company facts. Candidate statements about how those signals may affect data acquisition are explicitly framed as a candidate hypothesis rather than internal NIQ knowledge.
+Used for:
+- collaboration date;
+- enterprise applications / agents / workflow direction;
+- 160-petabyte AI-ready data foundation;
+- approximately 260 million product items;
+- 10.5 billion product attributes.
+
+### 10 August 2026 — Q2 2026 results
+Source: NIQ Investor Relations
+https://investors.nielseniq.com/news/news-details/2026/NIQ-Announces-Strong-Second-Quarter-2026-Results/default.aspx
+
+Used for:
+- approximately 4.3 trillion data records added per week by the Connect data engine;
+- public context that NIQ is moving aggressively on AI opportunities and AI-enabled cost efficiency.
+
+## Candidate-created inference
+
+The statement that upstream acquisition becomes more strategic as intelligence moves closer to enterprise decisions is a candidate interpretation of the public company direction, not an NIQ internal statement.
+
+The Source Portfolio scenarios are illustrative decision models. They do not assert NIQ's current market-by-market source mix, workforce distribution, vendor economics, automation readiness, savings potential, or internal quality thresholds.
 
 ## Candidate evidence
 
-Candidate claims are limited to user-verified career evidence:
-
-- Vape-Jet: AI-first operating transformation across operations and systems in a robotics/machine-vision environment with approximately 1,000 fielded robots.
-- Amazon: Prime Pittsburgh launch and 24/7 operations supporting approximately five million second-day orders annually.
-- ZeusVu: regulated drone operations with a 100% safety record and TensorFlow-based concepts for aerial inventory/computer-vision field intelligence.
-- Cardinal Building Products: built the company's first remote regional operation and modernized distributed workflows.
-- DudeWorth: AI-readiness frameworks and agentic workflow patterns.
-
-No NIQ internal metrics, source mix, vendor economics, workforce counts, cost-out targets or market-specific collection conditions are asserted by the candidate site.
+Career claims in the site are limited to verified/user-confirmed evidence, including Amazon operating scale, Vape-Jet operational signal integration, ZeusVu regulated field operations and computer-vision concepts, and operating-system work across Compunetics, Cardinal, and DudeWorth.

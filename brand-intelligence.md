@@ -44,7 +44,7 @@ The official guidelines emphasize a primarily blue narrative with controlled acc
 
 ## Motion character
 
-NIQ's current public direction is tech-forward and AI-native. The campaign expresses that through restrained depth navigation and one-shot state changes rather than perpetual decorative motion. Reduced-motion users receive a complete vertical narrative with no 3D transitions.
+NIQ's current public direction is tech-forward and AI-native. The campaign expresses that through a restrained depth-based Signal Corridor: scenes travel through Z-space, defocus away from the focal plane, and settle sharply after scroll. A sparse signal field uses low-amplitude twinkling and scroll-velocity streaking to suggest data in motion rather than a literal space theme. Reduced-motion users receive a complete vertical narrative with a static signal field and no 3D transitions.
 
 ## Independent-candidate distinction
 
