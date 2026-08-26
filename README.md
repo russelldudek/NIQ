@@ -2,31 +2,30 @@
 
 Independent candidate vision by Russell Dudek for global data acquisition leadership at NIQ.
 
+The desktop experience is built as a **Signal Corridor**: scrolling moves the viewer through a sequence of role-specific spatial planes rather than a conventional vertical page. Scenes progressively defocus as they leave the focal plane, then magnetically settle into focus after scrolling pauses. A restrained signal field sits behind the experience; it barely twinkles at rest, stretches subtly with scroll velocity, and quiets again when the next scene resolves. Mobile and reduced-motion users receive the complete semantic narrative without spatial travel or optical blur.
+
 ## Core argument
 
 **The Full View starts at the source.**
 
-The site argues that global data acquisition should be managed as a portfolio of collection methods rather than as a field program: protect the knowledge and trust embedded in the current model while changing the mechanisms that create unnecessary cost, latency, inconsistency, and scaling friction.
+The candidate thesis is to transform the economics of global data collection without weakening trust, coverage, retailer relationships, privacy, or local intelligence. The operating model treats acquisition as a portfolio of collection methods rather than a field program.
 
-## Experience
+The central tactical-empathy statement is:
 
-Desktop uses a depth-based Signal Corridor rather than ordinary vertical section scrolling. Scenes move through Z-space, progressively defocus as they leave the focal plane, and settle magnetically to a sharp scene after scrolling pauses. A sparse signal field sits behind the narrative; tiny points twinkle at rest and respond subtly to scroll velocity without becoming a space-themed visual. Mobile uses a semantic vertical composition, and reduced-motion mode removes depth motion, blur, auto-snap, and twinkling.
+**Protect the knowledge. Change the mechanism.**
 
-The primary interactive artifact is a qualitative Source Portfolio model. Four illustrative market scenarios rebalance Field, Retailer, eCommerce, Partner, Consumer, and AI-native collection methods into operating roles such as Primary, Supporting, and Exception. No percentage source mix is implied.
+The Collection Portfolio interaction intentionally avoids unsupported source-mix percentages. Market scenarios resolve each source class to qualitative roles — `PRIMARY`, `SUPPORTING`, `EXCEPTION`, or `SUNSET` — while keeping four invariants visible: trust, coverage, local intelligence, and economics.
 
-## Current company context used
+## Current public company context
 
-- NIQ / The OpenAI Deployment Company collaboration announced 25 August 2026
-- NIQ AI-ready data foundation: 160 petabytes, approximately 260 million product items, 10.5 billion product attributes
-- NIQ Q2 2026: Connect data engine at approximately 4.3 trillion records added per week
+The site references NIQ's August 25, 2026 collaboration with The OpenAI Deployment Company and NIQ's public description of its AI-ready data foundation: 160 petabytes, approximately 260 million product items, and 10.5 billion product attributes. It also references NIQ's Q2 2026 disclosure that its Connect engine was adding approximately 4.3 trillion records per week. Candidate interpretation is explicitly labeled as hypothesis.
 
-Primary public sources are linked directly inside the company-moment scene.
+Official sources:
+- https://nielseniq.com/global/en/news-center/2026/niq-deployco-consumer-intelligence-enterprise-workflows/
+- https://investors.nielseniq.com/news/news-details/2026/NIQ-Announces-Strong-Second-Quarter-2026-Results/default.aspx
 
 ## Development state
 
-This is a development build and is intentionally not yet access-controlled. A protected external release should use server- or edge-layer authentication rather than a client-side password overlay.
+This development build is intentionally not access-controlled yet. Final external release should use real server- or edge-layer authentication, not a client-side JavaScript password screen.
 
-The official NIQ logo/wordmark still needs to replace the temporary typeset NIQ identifier before protected external release. No official mark is recreated or traced in code.
-
-Russell Dudek · Pittsburgh, Pennsylvania
-russelldudek@gmail.com · 412.287.8640 · https://www.linkedin.com/in/russelldudek
+The official NIQ mark remains a release blocker until a usable official asset is locally committed. The development build uses a clearly typeset NIQ identifier rather than tracing or recreating the logo.
